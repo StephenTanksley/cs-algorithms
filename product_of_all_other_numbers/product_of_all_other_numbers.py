@@ -68,6 +68,7 @@ def product_of_all_other_numbers(arr, cache):
 
         # we add that product to our solutions accumulator array and repeat the loop
         solutions.append(product)
+        print(cache)
 
     return solutions
 
