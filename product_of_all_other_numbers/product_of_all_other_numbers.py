@@ -28,16 +28,23 @@ P - Naive solution:
 P - Optimized(?) solution
     
     1) Pretty much do the same thing as on the Naive solution.
-    2) Cache the results of the first function call and the popped value using enum.
+    2) Cache the results of the first function call and the popped value 
+       using enumerate.
     3) Compare the popped value to value at the loop index.
-        4) if they're the same, push the results of that prior function call into 
-           solutions array and keep the popped value the same.
-        5) if they're different, perform caching of the new value
+        4) if the cache has the results of a number that's the same at i, 
+           push the results of that prior function call into solutions array 
+           and keep the popped value the same.
+        5) if they're different, perform caching of the new value and add 
+           to solutions array.
+        6) return the solutions array at the end of the function.
+
+E - Need to provide a cache as an argument to the function as well as the
+    requirements for the normal algorithm's requirements.
 
 """
 
 
-def product_of_all_other_numbers(arr):
+def product_of_all_other_numbers(arr, cache):
 
     # We create a solutions array to store our final solutions.
     solutions = []
@@ -46,12 +53,18 @@ def product_of_all_other_numbers(arr):
     # We create a temporary copy of the original array. We only want to do operations on this temporary copy.
     # We want to create the temporary copy of the array inside the loop because we don't want the copy of the array to persist beyond one cycle.
     for i, num in enumerate(arr):
+
+        if i in cache:
+            solutions.append(cache[i])
+            return
+
         temp = arr[:]
         # we pop off the value at the index of i
         popped = temp.pop(i)
 
         # we reduce the temporary array down to a single product
         product = reduce((lambda x, y: x * y), temp)
+        cache[i] = product
 
         # we add that product to our solutions accumulator array and repeat the loop
         solutions.append(product)
@@ -66,4 +79,4 @@ if __name__ == '__main__':
            9, 5, 4, 9, 10, 3, 9, 1, 9, 2, 6, 8, 5, 5, 4, 7, 7, 5, 8, 1, 6, 5, 1, 7, 7, 8]
 
     print(
-        f"Output of product_of_all_other_numbers: {product_of_all_other_numbers(arr)}")
+        f"Output of product_of_all_other_numbers: {product_of_all_other_numbers(arr, {})}")
