@@ -1,4 +1,4 @@
-import itertools
+from itertools import permutations
 
 '''
 Input: an integer
@@ -6,46 +6,50 @@ Returns: an integer
 '''
 
 """
-U - Cookie Monster can eat up to 3 cookies at a time. 
+U - Cookie Monster can eat up to 3 cookies at a time. We need to determine 
+    how many permutations are possible for (n) cookies if he eats:
+    
+        1) 1 cookie, then 1 cookie, then 1 cookie.
+        2) 2 cookies, then 1 cookie
+        3) 1 cookie, then 2 cookies
+        4) 3 cookies all at once.
+        
+    Therefore, the function `eating_cookies(3)` should return 4, which is
+    the sum of all the different ways he could eat all the cookies in the jar.
+    
+P - The function is essentially recursive. We want to narrow down the field of 
+    possible choices by calling the function and dividing it into simpler sub-problems.
+    To accomplish this, we can set up a base case based on some of the inputs in the 
+    test files.
 
 """
 
-my_list = [1, 2, 3, 4, 5]
-my_second_list = my_list[:]
-my_list.append(6)
-print('my_list: ', my_list)
-print('second list: ', my_second_list)
 
+def eating_cookies(n, cache=None):
 
-# combine = itertools.combinations(range(51), 3)
-# combine2 = itertools.combinations(range(51), 2)
-# combine3 = itertools.combinations(range(51), 1)
+    if cache is None:
+        cache = {}
 
-total = 124950 * 2550 * 51
-print(total)
+    cache[0] = 1
+    cache[1] = 1
+    cache[2] = 2
 
-permute = itertools.permutations(range(51), 3)
-permute2 = itertools.permutations(range(51), 2)
-permute3 = itertools.permutations(range(51), 1)
+    # base cases for recursion
+    if n < 0:
+        return 0
+    if n == 0:
+        return 1
 
-full_list = [permute, permute2, permute3]
+    # Let's see if the answer is already stored in the cache.
+    if n in cache:
+        return cache[n]
 
-full_permute = itertools.permutations(full_list, 3)
-counter = 0
+    number_of_ways = eating_cookies(
+        n-1, cache=cache) + eating_cookies(n-2, cache=cache) + eating_cookies(n-3, cache=cache)
 
-for c in full_permute:
-    counter += 1
-    print(counter)
+    cache[n] = number_of_ways
 
-# for p in permute3:
-#     counter += 1
-#     print(counter)
-
-
-def eating_cookies(n):
-    # Your code here
-
-    pass
+    return number_of_ways
 
 
 if __name__ == "__main__":

@@ -17,13 +17,16 @@ P - Naive implementation
     3) check max for window on each iteration. 
         ex. - return max(window)
     4) The expected return is an array featuring the max of each iteration.
+    
 """
 
 
 def sliding_window_max(nums, k):
     output_array = []
 
+    # NAIVE SOLUTION
     for i, item in enumerate(nums):
+
         opened = i
         closed = i + k
 
@@ -34,8 +37,26 @@ def sliding_window_max(nums, k):
             # append the max item inside that window
             output_array.append(max(window))
 
+    # # Artem's Solution
+    # for i in range(len(nums) - k + 1):
+    #     current_window = nums[i:i + k]
+    #     current_max = max(current_window)
+    #     output_array.append(current_max)
+
     # return the output_array
     return output_array
+
+
+def sliding_window_max_queue(nums, k):
+    # create a queue that stores 'useful numbers'
+    # insert the first k elements.
+    # for each element we add
+    # all smaller numbers in the queue, remove them.
+    # process the remaining elements in nums.
+    # from k to n-1
+    # the element at the front of the queue
+    # is the largest number of the current window
+    # so save that number into our output.
 
 
 if __name__ == '__main__':
